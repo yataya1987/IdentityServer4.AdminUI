@@ -1,0 +1,22 @@
+version: 1.2.{build}
+image: Visual Studio 2017
+branches:
+  only:
+  - master
+pull_requests:
+  do_not_increment_build_number: true
+
+init:
+  # Good practice, because Windows line endings are different from Unix/Linux ones
+  - cmd: git config --global core.autocrlf true
+before_build:
+  # Display .NET Core version
+  - cmd: dotnet --version
+  # Display minimal restore text
+  - cmd: dotnet restore ./src --verbosity m
+
+build_script:
+  - cmd: dotnet build ./src
+
+test_script:
+  - cmd: dotnet test ./src
